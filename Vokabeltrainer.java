@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Vokabeltrainer{
     private static ArrayList<Vokablekarte> vocabList = new ArrayList<Vokablekarte>();
@@ -9,9 +10,45 @@ public class Vokabeltrainer{
         //add to database
     }
 
+    public static void learnGermanSpanish(){
+        Scanner keyboard = new Scanner(System.in);
+        int wordRan = new Random().nextInt(vocabList.size());
+
+        System.out.println("");
+        System.out.println(vocabList.get(wordRan).getGermanWord());
+        System.out.println("Skip: 1");
+        System.out.println("Delete word: 2");
+        System.out.println("Enter Spanish:");
+
+        String selection = keyboard.nextLine();
+        if(selection.equals("1")){
+            learnGermanSpanish();
+        }
+        else if(selection.equals("2")){
+            //delete word
+        }
+        else{
+            if(selection.equals(vocabList.get(wordRan).getSpanishWord())){
+                System.out.println("correct");
+            }else{
+                System.out.println("wrong");
+            }
+            try{
+                Thread.sleep(1000);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+            learnGermanSpanish();
+        }
+        keyboard.close();
+    }
+
     public static void learnSpanishGerman(){
         Scanner keyboard = new Scanner(System.in);
-        System.out.println(vocabList.get(1).getSpanishWord());
+        int wordRan = new Random().nextInt(vocabList.size());
+
+        System.out.println("");
+        System.out.println(vocabList.get(wordRan).getSpanishWord());
         System.out.println("Skip: 1");
         System.out.println("Delete word: 2");
         System.out.println("Enter German:");
@@ -24,10 +61,15 @@ public class Vokabeltrainer{
             //delete word
         }
         else{
-            if(keyboard.nextLine().equals(vocabList.get(1).getGermanWord())){
+            if(selection.equals(vocabList.get(wordRan).getGermanWord())){
                 System.out.println("correct");
             }else{
                 System.out.println("wrong");
+            }
+            try{
+                Thread.sleep(1000);
+            } catch(InterruptedException e){
+                e.printStackTrace();
             }
             learnSpanishGerman();
         }
@@ -42,6 +84,8 @@ public class Vokabeltrainer{
         if(keyboard.nextInt() == 1)
         {
             learnSpanishGerman();
+        }else{
+            learnGermanSpanish();
         }
         keyboard.close();
     }

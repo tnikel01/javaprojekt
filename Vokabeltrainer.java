@@ -25,7 +25,12 @@ public class Vokabeltrainer{
             learnGermanSpanish();
         }
         else if(selection.equals("2")){
-            //delete word
+            vocabList.remove(wordRan);
+            learnGermanSpanish();
+            //remove
+        }
+        else if(selection.equals("q")){
+            mainpage();
         }
         else{
             if(selection.equals(vocabList.get(wordRan).getSpanishWord())){
@@ -58,7 +63,11 @@ public class Vokabeltrainer{
             learnSpanishGerman();
         }
         else if(selection.equals("2")){
+            vocabList.remove(wordRan);
+            learnSpanishGerman();
             //delete word
+        }else if(selection.equals("q")){
+            mainpage();
         }
         else{
             if(selection.equals(vocabList.get(wordRan).getGermanWord())){
@@ -80,12 +89,14 @@ public class Vokabeltrainer{
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Spanish-German: 1");
         System.out.println("German-Spanish: 2");
-
-        if(keyboard.nextInt() == 1)
+        String selection = keyboard.nextLine();
+        if(selection.equals("1"))
         {
             learnSpanishGerman();
-        }else{
+        }else if(selection.equals("2")) {
             learnGermanSpanish();
+        }else if(selection.equals("q")){
+            mainpage();
         }
         keyboard.close();
     }
@@ -94,15 +105,13 @@ public class Vokabeltrainer{
         Scanner keyboard = new Scanner(System.in);
 
         System.out.println("Enter German:");
-        System.out.println("Back to main: 2");
         String input = keyboard.nextLine();
-        if(input.equals("2")){
+        if(input.equals("q")){
             mainpage();
         }else{
             System.out.println("Enter Spanish:");
-            System.out.println("Back to main: 2");
             String input2 = keyboard.nextLine();
-            if(input2.equals("2")){
+            if(input2.equals("q")){
                 mainpage();
             }else{
                 addvokabelkarte(input, input2);
@@ -116,6 +125,7 @@ public class Vokabeltrainer{
         Scanner keyboard = new Scanner(System.in);
         System.out.println("learn: 1");
         System.out.println("add: 2");
+        System.out.println("Press q at anytime to go back.");
         int selection = keyboard.nextInt();
         keyboard.nextLine(); 
 
@@ -134,6 +144,7 @@ public class Vokabeltrainer{
         Scanner keyboard = new Scanner(System.in);
 
         System.out.println("Hello!");
+        /* 
         System.out.println("Login: 1");
         System.out.println("Register: 2");
 
@@ -159,6 +170,7 @@ public class Vokabeltrainer{
             String username = keyboard.nextLine(); 
             
         }
+            */
         mainpage();
 
         keyboard.close();

@@ -1,7 +1,7 @@
-public class Vokablekarte{
+public class VocabularyCard{
     private String germanWord;
     private String SpanishWord;
-    public Vokablekarte(String german, String spanish){
+    public VocabularyCard(String german, String spanish){
         germanWord = german;
         SpanishWord = spanish;
     }

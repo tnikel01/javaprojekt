@@ -7,12 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Vocabularytrainer{
-    private static ArrayList<Vokablekarte> vocabList = new ArrayList<Vokablekarte>();
+public class VocabularyTrainer{
+    private static ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
 
-    public static void addvokabelkarte(String de, String span){
+    public static void addVocabCard(String de, String span){
         String filePath = "basic.csv";
-        vocabList.add(new Vokablekarte(de, span));
+        vocabList.add(new VocabularyCard(de, span));
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(de + "," + span);
@@ -22,94 +22,80 @@ public class Vocabularytrainer{
         }
     }
 
-    public static void learnGermanSpanish(){
+    public static void learnGermanSpanish(int selec){
         Scanner keyboard = new Scanner(System.in);
         int wordRan = new Random().nextInt(vocabList.size());
 
         System.out.println("");
-        System.out.println(vocabList.get(wordRan).getGermanWord());
+        if(selec == 1)
+            System.out.println(vocabList.get(wordRan).getGermanWord());
+        else
+            System.out.println(vocabList.get(wordRan).getSpanishWord());
         System.out.println("Skip: 1");
         System.out.println("Delete word: 2");
-        System.out.println("Enter Spanish:");
-
+        if(selec == 1)
+            System.out.println("Enter Spanish:");
+        else
+            System.out.println("Enter English:");
         String selection = keyboard.nextLine();
-        if(selection.equals("1")){
-            learnGermanSpanish();
-        }
+        if(selection.equals("1"))
+            if(selec == 1)
+                learnGermanSpanish(1);
+            else
+                learnGermanSpanish(2);
+
         else if(selection.equals("2")){
             vocabList.remove(wordRan);
-            learnGermanSpanish();
+            if(selec == 1)
+                learnGermanSpanish(1);
+            else
+                learnGermanSpanish(2);
             //remove
         }
-        else if(selection.equals("q")){
-            mainpage();
-        }
+        else if(selection.equals("q"))
+            mainPage();
         else{
-            if(selection.equals(vocabList.get(wordRan).getSpanishWord())){
-                System.out.println("correct");
+            if(selec == 1){
+                if(selection.equals(vocabList.get(wordRan).getSpanishWord()))
+                    System.out.println("correct");
+                else
+                    System.out.println("wrong");
+                try{
+                    Thread.sleep(1000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+                learnGermanSpanish(1);
             }else{
-                System.out.println("wrong");
+                if(selection.equals(vocabList.get(wordRan).getGermanWord()))
+                    System.out.println("correct");
+                else
+                    System.out.println("wrong");
+                try{
+                    Thread.sleep(1000);
+                } catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+                learnGermanSpanish(2);
             }
-            try{
-                Thread.sleep(1000);
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-            learnGermanSpanish();
-        }
-        keyboard.close();
-    }
-
-    public static void learnSpanishGerman(){
-        Scanner keyboard = new Scanner(System.in);
-        int wordRan = new Random().nextInt(vocabList.size());
-
-        System.out.println("");
-        System.out.println(vocabList.get(wordRan).getSpanishWord());
-        System.out.println("Skip: 1");
-        System.out.println("Delete word: 2");
-        System.out.println("Enter German:");
-
-        String selection = keyboard.nextLine();
-        if(selection.equals("1")){
-            learnSpanishGerman();
-        }
-        else if(selection.equals("2")){
-            vocabList.remove(wordRan);
-            learnSpanishGerman();
-            //delete word
-        }else if(selection.equals("q")){
-            mainpage();
-        }
-        else{
-            if(selection.equals(vocabList.get(wordRan).getGermanWord())){
-                System.out.println("correct");
-            }else{
-                System.out.println("wrong");
-            }
-            try{
-                Thread.sleep(1000);
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-            learnSpanishGerman();
         }
         keyboard.close();
     }
 
     public static void learn(){
         Scanner keyboard = new Scanner(System.in);
+
         System.out.println("Spanish-German: 1");
         System.out.println("German-Spanish: 2");
+
         String selection = keyboard.nextLine();
         if(selection.equals("1"))
-        {
-            learnSpanishGerman();
-        }else if(selection.equals("2")) {
-            learnGermanSpanish();
-        }else if(selection.equals("q")){
-            mainpage();
-        }
+            learnGermanSpanish(2);
+        else if(selection.equals("2")) 
+            learnGermanSpanish(1);
+        else if(selection.equals("q"))
+            mainPage();
+
         keyboard.close();
     }
 
@@ -118,15 +104,15 @@ public class Vocabularytrainer{
 
         System.out.println("Enter German:");
         String input = keyboard.nextLine();
-        if(input.equals("q")){
-            mainpage();
-        }else{
+        if(input.equals("q"))
+            mainPage();
+        else{
             System.out.println("Enter Spanish:");
             String input2 = keyboard.nextLine();
-            if(input2.equals("q")){
-                mainpage();
-            }else{
-                addvokabelkarte(input, input2);
+            if(input2.equals("q"))
+                mainPage();
+            else{
+                addVocabCard(input, input2);
                 add();
             }
         }
@@ -143,7 +129,7 @@ public class Vocabularytrainer{
                     String german = parts[0].trim();  // German word
                     String spanish = parts[1].trim(); // Spanish word
 
-                    vocabList.add(new Vokablekarte(german, spanish));
+                    vocabList.add(new VocabularyCard(german, spanish));
                 }
             }
         } catch (IOException e) {
@@ -152,11 +138,7 @@ public class Vocabularytrainer{
     }
 
 
-    public static void mainpage(){
-        readFromCsv("basic.csv");
-
-
-
+    public static void mainPage(){
         Scanner keyboard = new Scanner(System.in);
         System.out.println("learn: 1");
         System.out.println("add: 2");
@@ -165,19 +147,17 @@ public class Vocabularytrainer{
         keyboard.nextLine(); 
 
         if (selection == 1)
-        {
             learn();
-        }
+        
         if (selection == 2)
-        {
             add();
-        }
+        
         keyboard.close();
     }
 
     public static void main(String args[]){
-        Scanner keyboard = new Scanner(System.in);
-
+        //Scanner keyboard = new Scanner(System.in);
+        readFromCsv("basic.csv");
         System.out.println("Hello!");
         /* 
         System.out.println("Login: 1");
@@ -195,19 +175,16 @@ public class Vocabularytrainer{
                 System.out.println("Enter password:");
                 String password = keyboard.nextLine(); 
                 if(password.equals("t")) //not working
-                {
                     System.out.println("LogedIn");
-                }
             }
         }
         if(selection == 2){
             System.out.println("Create username:");
             String username = keyboard.nextLine(); 
-            
         }
             */
-        mainpage();
+        mainPage();
 
-        keyboard.close();
+        //keyboard.close();
     }
 }

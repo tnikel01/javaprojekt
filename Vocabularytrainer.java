@@ -1,13 +1,25 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
-public class Vokabeltrainer{
+public class Vocabularytrainer{
     private static ArrayList<Vokablekarte> vocabList = new ArrayList<Vokablekarte>();
 
     public static void addvokabelkarte(String de, String span){
+        String filePath = "basic.csv";
         vocabList.add(new Vokablekarte(de, span));
-        //add to database
+        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            writer.write(de + "," + span);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void learnGermanSpanish(){
@@ -121,7 +133,30 @@ public class Vokabeltrainer{
         keyboard.close();
     }
 
+    public static void readFromCsv(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String german = parts[0].trim();  // German word
+                    String spanish = parts[1].trim(); // Spanish word
+
+                    vocabList.add(new Vokablekarte(german, spanish));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static void mainpage(){
+        readFromCsv("basic.csv");
+
+
+
         Scanner keyboard = new Scanner(System.in);
         System.out.println("learn: 1");
         System.out.println("add: 2");

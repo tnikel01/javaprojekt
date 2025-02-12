@@ -6,10 +6,11 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class VocabularyTrainer {
     private static ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
-    private static String filePath;
+    private static String filePath = "";
     private static Scanner keyboard = new Scanner(System.in);
 
     public static void addVocabCard(String de, String span) {
@@ -27,15 +28,15 @@ public class VocabularyTrainer {
     }
 
     public static void learnGermanSpanish(int selec) {
-
+        ArrayList<VocabularyCard> actualList = vocabList;
         while (true) {
-            int wordRan = new Random().nextInt(vocabList.size());
+            int wordRan = new Random().nextInt(actualList.size());
 
             System.out.println("");
             if (selec == 1)
-                System.out.println(vocabList.get(wordRan).getGermanWord());
+                System.out.println(actualList.get(wordRan).getGermanWord());
             else
-                System.out.println(vocabList.get(wordRan).getSpanishWord());
+                System.out.println(actualList.get(wordRan).getSpanishWord());
 
             System.out.println("Skip: 1");
             System.out.println("Delete word: 2");
@@ -48,8 +49,9 @@ public class VocabularyTrainer {
             String selection = keyboard.nextLine();
 
             if (selection.equals("1")) {
-                continue;  // Skip and show a new word
+                continue;
             } else if (selection.equals("2")) {
+                actualList.remove(wordRan);
                 vocabList.remove(wordRan);
                 removeWordFromFile();
                 continue;
@@ -57,15 +59,17 @@ public class VocabularyTrainer {
                 mainPage();
                 break;
             } else {
-                if (selec == 1 && selection.equals(vocabList.get(wordRan).getSpanishWord())) {
+                if (selec == 1 && selection.equals(actualList.get(wordRan).getSpanishWord())) {
                     System.out.println("correct");
-                } else if (selec == 2 && selection.equals(vocabList.get(wordRan).getGermanWord())) {
+                    actualList.remove(wordRan);
+                } else if (selec == 2 && selection.equals(actualList.get(wordRan).getGermanWord())) {
                     System.out.println("correct");
+                    actualList.remove(wordRan);
                 } else {
                     System.out.println("wrong");
                 }
                 try {
-                    Thread.sleep(1000);  // Pause before showing a new word
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -75,8 +79,8 @@ public class VocabularyTrainer {
 
     public static void learn() {
 
-        System.out.println("Spanish-German: 1");
-        System.out.println("German-Spanish: 2");
+        System.out.println("Spanish-English: 1");
+        System.out.println("English-Spanish: 2");
 
         String selection = keyboard.nextLine();
         if (selection.equals("1"))
@@ -88,7 +92,7 @@ public class VocabularyTrainer {
     }
 
     public static void add() {
-        System.out.println("Enter German:");
+        System.out.println("Enter English:");
         String input = keyboard.nextLine();
         if (input.equals("q"))
             mainPage();
@@ -111,10 +115,10 @@ public class VocabularyTrainer {
                 
                 String[] parts = line.split(",");
                 if (parts.length == 2) {
-                    String german = parts[0].trim();
+                    String english = parts[0].trim();
                     String spanish = parts[1].trim();
 
-                    vocabList.add(new VocabularyCard(german, spanish));
+                    vocabList.add(new VocabularyCard(english, spanish));
                 }
             }
         } catch (IOException e) {
@@ -143,7 +147,6 @@ public class VocabularyTrainer {
 
         if (selection == 1)
             learn();
-
         if (selection == 2)
             add();
         if (selection == 3) {
@@ -157,6 +160,5 @@ public class VocabularyTrainer {
     public static void main(String args[]) {
         System.out.println("Hello!");
         mainPage();
-        keyboard.close();
     }
 }

@@ -1,3 +1,4 @@
+package cards;
 public class VocabularyCard{
     private String germanWord;
     private String SpanishWord;

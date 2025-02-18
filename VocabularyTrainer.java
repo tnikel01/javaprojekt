@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import cards.*;
 
 public class VocabularyTrainer {
     private static ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();

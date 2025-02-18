@@ -40,6 +40,7 @@ btnadd.addEventListener('click', function(){
 Fieldload.addEventListener("keydown", function(event) {
   if (event.key === "Enter" && this.value.trim() !== "") {
       event.preventDefault();
+      let inputValue = this.value.trim();
       console.log("Submitted:", inputValue);
   }
 });
@@ -47,6 +48,7 @@ Fieldload.addEventListener("keydown", function(event) {
 Useranswer.addEventListener("keydown", function(event) {
   if (event.key === "Enter" && this.value.trim() !== "") {
       event.preventDefault(); 
+      let inputValue = this.value.trim();
       console.log("Answer:", inputValue);
   }
 });

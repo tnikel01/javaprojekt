@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class VocabularyTrainer {
+public class VocabularyTrainerWeb {
     private static ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
     private static String filePath = "basic.csv";
 
@@ -43,7 +43,7 @@ public class VocabularyTrainer {
             else
                 System.out.println("Enter English:");
 
-            String selection = keyboard.nextLine();
+            String selection = "";
 
             if (selection.equals("1")) {
                 continue;
@@ -53,7 +53,7 @@ public class VocabularyTrainer {
                 removeWordFromFile();
                 continue;
             } else if (selection.equals("q")) {
-                mainPage();
+                //mainPage();
                 break;
             } else {
                 if (selec == 1 && selection.equals(actualList.get(wordRan).getSpanishWord())) {

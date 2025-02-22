@@ -10,10 +10,11 @@ import cards.*;
 public class VocabularyTrainerWeb {
     private static ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
     private static String filePath = "basic.csv";
+    private static ArrayList<VocabularyCard> actualList = vocabList;
 
     public static void addVocabCard(String de, String span) {
         if (filePath.equals("")) {
-            filePath = "basic.csv";  // Default file if not set
+            filePath = "basic.csv";
         }
         vocabList.add(new VocabularyCard(de, span));
         
@@ -24,55 +25,41 @@ public class VocabularyTrainerWeb {
             e.printStackTrace();
         }
     }
-
-    public static void learnGermanSpanish(int selec) {
-        ArrayList<VocabularyCard> actualList = vocabList;
-        while (true) {
-            int wordRan = new Random().nextInt(actualList.size());
-
-            System.out.println("");
-            if (selec == 1)
-                System.out.println(actualList.get(wordRan).getGermanWord());
-            else
-                System.out.println(actualList.get(wordRan).getSpanishWord());
-
-            System.out.println("Skip: 1");
-            System.out.println("Delete word: 2");
-
-            if (selec == 1)
-                System.out.println("Enter Spanish:");
-            else
-                System.out.println("Enter English:");
-
-            String selection = "";
-
-            if (selection.equals("1")) {
-                continue;
-            } else if (selection.equals("2")) {
-                actualList.remove(wordRan);
-                vocabList.remove(wordRan);
-                removeWordFromFile();
-                continue;
-            } else if (selection.equals("q")) {
-                //mainPage();
-                break;
-            } else {
-                if (selec == 1 && selection.equals(actualList.get(wordRan).getSpanishWord())) {
-                    System.out.println("correct");
-                    actualList.remove(wordRan);
-                } else if (selec == 2 && selection.equals(actualList.get(wordRan).getGermanWord())) {
-                    System.out.println("correct");
-                    actualList.remove(wordRan);
-                } else {
-                    System.out.println("wrong");
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+    //1 = German-Spanish
+    //2 = Spanish-German
+    public String getWord(int selec){
+        int wordRan = new Random().nextInt(actualList.size());
+        if (selec == 1)
+            return actualList.get(wordRan).getGermanWord();
+        else if(selec == 2)
+            return actualList.get(wordRan).getSpanishWord();
+        else
+            return "wrond id";
+    }
+    //1 = German-Spanish
+    //2 = Spanish-German
+    public String isCorrect(String word, int id, int selec){
+        if(selec == 1){
+            if(word.equals(actualList.get(id).getSpanishWord())){
+                actualList.remove(id);
+                return "correct";
+            }else
+                return "Wrong " + actualList.get(id).getSpanishWord();
+        }else if(selec == 2){
+            if(word.equals(actualList.get(id).getGermanWord())){
+                actualList.remove(id);
+                return "correct";
+            }else
+                return "Wrong " + actualList.get(id).getGermanWord();
+        }else{
+            return "wrong id";
         }
+    }
+
+    public void deleteWord(int id){
+        actualList.remove(id);
+        vocabList.remove(id);
+        removeWordFromFile();
     }
 
     public static void readFromCsv(String filePath) {
